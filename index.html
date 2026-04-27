@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Will You Marry Me? 💍</title>
+    <title>Darshini 💍</title>
     <style>
         * {
             margin: 0;
@@ -218,39 +218,6 @@
             75% { transform: translateX(5px); }
         }
 
-        /* Music control */
-        .music-control {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .music-control:hover {
-            background: rgba(255, 255, 255, 0.4);
-            transform: scale(1.1);
-        }
-
-        .music-control.playing {
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
     </style>
 </head>
 <body>
@@ -260,14 +227,9 @@
     <div class="heart-bg">💖</div>
     <div class="heart-bg">💗</div>
 
-    <!-- Music control -->
-    <div class="music-control" id="musicControl" onclick="toggleMusic()">
-        <span id="musicIcon">🔊</span>
-    </div>
-
     <div class="container">
         <div class="card">
-            <h1>Hey Beautiful! 💫</h1>
+            <h1>Hey Darshini! 💫</h1>
             
             <div class="question-text" id="question"></div>
             
@@ -286,20 +248,9 @@
         </div>
     </div>
 
-    <!-- Audio elements -->
-    <audio id="yesMusic" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="noMusic" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2260/2260-preview.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="bgMusic" preload="auto" loop>
-        <source src="https://assets.mixkit.co/active_storage/sfx/1738/1738-preview.mp3" type="audio/mpeg">
-    </audio>
-
     <script>
         // Typing effect
-        const text = "Will you marry me? 💍";
+        const text = "Darshini, will you marry me? 💍";
         let i = 0;
 
         function typeEffect() {
@@ -312,37 +263,14 @@
 
         window.onload = () => {
             typeEffect();
-            // Auto-play background music on first interaction
-            document.addEventListener('click', () => {
-                const bgMusic = document.getElementById('bgMusic');
-                if (bgMusic.paused) {
-                    bgMusic.play().catch(e => console.log('Music autoplay prevented'));
-                }
-            }, { once: true });
         };
-
-        // Toggle music
-        function toggleMusic() {
-            const bgMusic = document.getElementById('bgMusic');
-            const musicControl = document.getElementById('musicControl');
-            
-            if (bgMusic.paused) {
-                bgMusic.play();
-                musicControl.classList.add('playing');
-                document.getElementById('musicIcon').textContent = '🔊';
-            } else {
-                bgMusic.pause();
-                musicControl.classList.remove('playing');
-                document.getElementById('musicIcon').textContent = '🔇';
-            }
-        }
 
         // No button messages
         const noMessages = [
             "No 😅",
             "Are you sure? 🥺",
             "Think again 😭",
-            "Pretty please 💖",
+            "Darshini please 💖",
             "Last chance! 😤",
             "Don't break my heart 💔",
             "Say yes! 🥰"
@@ -353,11 +281,6 @@
 
         function handleNo() {
             const noBtn = document.getElementById('no-btn');
-            const noMusic = document.getElementById('noMusic');
-            
-            // Play sad sound
-            noMusic.currentTime = 0;
-            noMusic.play().catch(e => console.log('Could not play sound'));
             
             noClickCount++;
             noBtn.innerText = noMessages[noClickCount % noMessages.length];
@@ -413,14 +336,7 @@
 
         // Yes button click
         function showYes() {
-            const yesMusic = document.getElementById('yesMusic');
-            const bgMusic = document.getElementById('bgMusic');
             const resultDiv = document.getElementById('result');
-            
-            // Play yes music
-            yesMusic.currentTime = 0;
-            yesMusic.play().catch(e => console.log('Could not play sound'));
-            bgMusic.pause();
             
             // Create confetti
             createConfetti();
@@ -429,8 +345,8 @@
             resultDiv.style.opacity = 0;
             resultDiv.innerHTML = `
                 <div class="result-text">OMG YES! 🎉💍</div>
-                <img src="https://media.giphy.com/media/g9GUufsscPNLW/giphy.gif" alt="celebration" class="result-gif" style="width: 280px; height: 280px;">
-                <div class="result-text" style="font-size: 24px; margin-top: 30px;">You just made me the happiest person! 💕</div>
+                <img src="https://cdn.dribbble.com/users/2273249/screenshots/5842646/kiss.gif" alt="celebration" class="result-gif" style="width: 280px; height: 280px;">
+                <div class="result-text" style="font-size: 24px; margin-top: 30px;">You just made me the happiest! 💕</div>
             `;
             
             setTimeout(() => {
