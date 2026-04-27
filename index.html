@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Marry Me? 💍</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #ffd89b 0%, #ff9f9b 25%, #ff7eb3 50%, #a78bfa 75%, #7afcff 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Confetti styles */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Main container */
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Card design */
+        .card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            padding: 60px 40px;
+            text-align: center;
+            width: 95%;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            animation: slideUp 1s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating hearts background */
+        .heart-bg {
+            position: absolute;
+            font-size: 30px;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .heart-bg:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .heart-bg:nth-child(2) { top: 70%; right: 8%; animation-delay: 1s; }
+        .heart-bg:nth-child(3) { top: 40%; right: 5%; animation-delay: 2s; }
+        .heart-bg:nth-child(4) { top: 60%; left: 8%; animation-delay: 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-text {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 30px 0;
+            min-height: 60px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            letter-spacing: 1px;
+        }
+
+        .emoji {
+            display: inline-block;
+            font-size: 40px;
+            margin: 0 5px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(2) { animation-delay: 0.2s; }
+        .emoji:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Buttons */
+        .button-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #yes-btn {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #fff;
+            min-width: 140px;
+        }
+
+        #yes-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 30px rgba(255, 154, 158, 0.5);
+        }
+
+        #yes-btn:active {
+            transform: scale(0.98);
+        }
+
+        #no-btn {
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            min-width: 140px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        #no-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(0.95);
+        }
+
+        /* Result section */
+        #result {
+            margin-top: 30px;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .result-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-gif {
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            max-width: 100%;
+            height: auto;
+            animation: scaleIn 0.8s ease;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .no-messages {
+            font-size: 20px;
+            margin-bottom: 15px;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* Music control */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .music-control:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(1.1);
+        }
+
+        .music-control.playing {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Floating hearts background -->
+    <div class="heart-bg">❤️</div>
+    <div class="heart-bg">💕</div>
+    <div class="heart-bg">💖</div>
+    <div class="heart-bg">💗</div>
+
+    <!-- Music control -->
+    <div class="music-control" id="musicControl" onclick="toggleMusic()">
+        <span id="musicIcon">🔊</span>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h1>Hey Beautiful! 💫</h1>
+            
+            <div class="question-text" id="question"></div>
+            
+            <div class="emoji">
+                <span>✨</span>
+                <span>💕</span>
+                <span>✨</span>
+            </div>
+
+            <div class="button-container">
+                <button id="yes-btn" onclick="showYes()">Yes 💖</button>
+                <button id="no-btn" onclick="handleNo()">No 😅</button>
+            </div>
+
+            <div id="result"></div>
+        </div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="yesMusic" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="noMusic" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2260/2260-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bgMusic" preload="auto" loop>
+        <source src="https://assets.mixkit.co/active_storage/sfx/1738/1738-preview.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Typing effect
+        const text = "Will you marry me? 💍";
+        let i = 0;
+
+        function typeEffect() {
+            if (i < text.length) {
+                document.getElementById("question").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeEffect, 80);
+            }
+        }
+
+        window.onload = () => {
+            typeEffect();
+            // Auto-play background music on first interaction
+            document.addEventListener('click', () => {
+                const bgMusic = document.getElementById('bgMusic');
+                if (bgMusic.paused) {
+                    bgMusic.play().catch(e => console.log('Music autoplay prevented'));
+                }
+            }, { once: true });
+        };
+
+        // Toggle music
+        function toggleMusic() {
+            const bgMusic = document.getElementById('bgMusic');
+            const musicControl = document.getElementById('musicControl');
+            
+            if (bgMusic.paused) {
+                bgMusic.play();
+                musicControl.classList.add('playing');
+                document.getElementById('musicIcon').textContent = '🔊';
+            } else {
+                bgMusic.pause();
+                musicControl.classList.remove('playing');
+                document.getElementById('musicIcon').textContent = '🔇';
+            }
+        }
+
+        // No button messages
+        const noMessages = [
+            "No 😅",
+            "Are you sure? 🥺",
+            "Think again 😭",
+            "Pretty please 💖",
+            "Last chance! 😤",
+            "Don't break my heart 💔",
+            "Say yes! 🥰"
+        ];
+
+        let noClickCount = 0;
+        let noOpacity = 1;
+
+        function handleNo() {
+            const noBtn = document.getElementById('no-btn');
+            const noMusic = document.getElementById('noMusic');
+            
+            // Play sad sound
+            noMusic.currentTime = 0;
+            noMusic.play().catch(e => console.log('Could not play sound'));
+            
+            noClickCount++;
+            noBtn.innerText = noMessages[noClickCount % noMessages.length];
+            
+            noOpacity -= 0.12;
+            noBtn.style.opacity = Math.max(noOpacity, 0.3);
+            
+            if (noOpacity < 0.3) {
+                noBtn.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    noBtn.style.pointerEvents = 'auto';
+                    noOpacity = 1;
+                    noBtn.innerText = noMessages[0];
+                    noBtn.style.opacity = 1;
+                }, 2000);
+            }
+            
+            // Shake animation
+            noBtn.style.animation = 'none';
+            setTimeout(() => {
+                noBtn.style.animation = 'shake 0.5s ease';
+            }, 10);
+        }
+
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#ff9a9e', '#fecfef', '#a78bfa', '#7afcff', '#ffd89b'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = '-10px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animation = `fall ${2 + Math.random() * 1}s ease-in forwards`;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        // Add CSS animation for confetti
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(${window.innerHeight + 100}px) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Yes button click
+        function showYes() {
+            const yesMusic = document.getElementById('yesMusic');
+            const bgMusic = document.getElementById('bgMusic');
+            const resultDiv = document.getElementById('result');
+            
+            // Play yes music
+            yesMusic.currentTime = 0;
+            yesMusic.play().catch(e => console.log('Could not play sound'));
+            bgMusic.pause();
+            
+            // Create confetti
+            createConfetti();
+            
+            // Show result
+            resultDiv.style.opacity = 0;
+            resultDiv.innerHTML = `
+                <div class="result-text">OMG YES! 🎉💍</div>
+                <img src="https://media.giphy.com/media/g9GUufsscPNLW/giphy.gif" alt="celebration" class="result-gif" style="width: 280px; height: 280px;">
+                <div class="result-text" style="font-size: 24px; margin-top: 30px;">You just made me the happiest person! 💕</div>
+            `;
+            
+            setTimeout(() => {
+                resultDiv.style.opacity = 1;
+            }, 100);
+            
+            // Hide buttons
+            document.querySelector('.button-container').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
