@@ -22,6 +22,8 @@
             animation: gradientShift 15s ease infinite;
             overflow: hidden;
             color: #fff;
+            -webkit-user-select: none;
+            user-select: none;
         }
 
         @keyframes gradientShift {
@@ -140,6 +142,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            -webkit-tap-highlight-color: transparent;
         }
 
         .yes-btn {
@@ -165,6 +168,7 @@
             position: absolute;
             cursor: not-allowed;
             pointer-events: none;
+            -webkit-touch-callout: none;
         }
 
         .no-btn:hover {
@@ -229,12 +233,6 @@
             display: none !important;
         }
 
-        .button-label {
-            font-size: 14px;
-            margin-top: 5px;
-            font-weight: 500;
-        }
-
     </style>
 </head>
 <body>
@@ -288,24 +286,32 @@
     </div>
 
     <script>
-        // Handle No Button Movement - Step 1
-        document.getElementById('noBtn1').addEventListener('mouseover', function() {
-            moveButton('noBtn1', 'step1');
+        // Handle No Button Movement - Step 1 (Mouse & Touch)
+        const noBtn1 = document.getElementById('noBtn1');
+        noBtn1.addEventListener('mouseover', function() {
+            moveButton('noBtn1');
+        });
+        noBtn1.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton('noBtn1');
         });
 
-        // Handle No Button Movement - Step 2
-        document.getElementById('noBtn2').addEventListener('mouseover', function() {
-            moveButton('noBtn2', 'step2');
+        // Handle No Button Movement - Step 2 (Mouse & Touch)
+        const noBtn2 = document.getElementById('noBtn2');
+        noBtn2.addEventListener('mouseover', function() {
+            moveButton('noBtn2');
+        });
+        noBtn2.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton('noBtn2');
         });
 
-        function moveButton(btnId, stepId) {
+        function moveButton(btnId) {
             const btn = document.getElementById(btnId);
-            const wrapper = btn.parentElement;
-            const step = document.getElementById(stepId);
             
             // Generate random position
-            const randomX = (Math.random() - 0.5) * 200;
-            const randomY = (Math.random() - 0.5) * 100;
+            const randomX = (Math.random() - 0.5) * 250;
+            const randomY = (Math.random() - 0.5) * 150;
             
             btn.style.left = randomX + 'px';
             btn.style.top = randomY + 'px';
