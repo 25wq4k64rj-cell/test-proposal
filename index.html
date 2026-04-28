@@ -163,7 +163,7 @@
         }
 
         .no-btn-wrapper {
-            position: fixed;
+            position: relative;
             z-index: 100;
         }
 
@@ -292,6 +292,7 @@
             const randomY = Math.random() * (window.innerHeight - 60);
             
             // Move the wrapper instead of button
+            wrapper.style.position = "fixed";
             wrapper.style.left = randomX + 'px';
             wrapper.style.top = randomY + 'px';
             
