@@ -59,6 +59,7 @@
             max-width: 500px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
             animation: slideUp 1s ease;
+            position: relative;
         }
 
         @keyframes slideUp {
@@ -129,6 +130,7 @@
             margin-top: 40px;
             flex-wrap: wrap;
             position: relative;
+            min-height: 60px;
         }
 
         button {
@@ -137,7 +139,6 @@
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -149,6 +150,7 @@
             background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
             color: #fff;
             min-width: 140px;
+            transition: all 0.3s ease;
         }
 
         .yes-btn:hover {
@@ -160,29 +162,24 @@
             transform: scale(0.98);
         }
 
+        .no-btn-wrapper {
+            position: fixed;
+            z-index: 100;
+        }
+
         .no-btn {
             background: rgba(255, 255, 255, 0.3);
             color: #fff;
             min-width: 140px;
             border: 2px solid rgba(255, 255, 255, 0.5);
-            position: absolute;
-            cursor: not-allowed;
-            pointer-events: none;
+            cursor: default;
+            transition: none;
             -webkit-touch-callout: none;
         }
 
         .no-btn:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: none;
-        }
-
-        .no-btn-wrapper {
-            position: relative;
-            min-width: 140px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* Result section */
@@ -257,7 +254,7 @@
 
                 <div class="button-container">
                     <button class="yes-btn" onclick="goToStep2()">Yes 💖</button>
-                    <div class="no-btn-wrapper">
+                    <div class="no-btn-wrapper" id="noBtnWrapper1">
                         <button class="no-btn" id="noBtn1">No 🙈</button>
                     </div>
                 </div>
@@ -275,7 +272,7 @@
 
                 <div class="button-container">
                     <button class="yes-btn" onclick="showYes()">Yes 💖</button>
-                    <div class="no-btn-wrapper">
+                    <div class="no-btn-wrapper" id="noBtnWrapper2">
                         <button class="no-btn" id="noBtn2">No 🙈</button>
                     </div>
                 </div>
@@ -286,41 +283,46 @@
     </div>
 
     <script>
-        // Handle No Button Movement - Step 1 (Mouse & Touch)
-        const noBtn1 = document.getElementById('noBtn1');
-        noBtn1.addEventListener('mouseover', function() {
-            moveButton('noBtn1');
-        });
-        noBtn1.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            moveButton('noBtn1');
-        });
-
-        // Handle No Button Movement - Step 2 (Mouse & Touch)
-        const noBtn2 = document.getElementById('noBtn2');
-        noBtn2.addEventListener('mouseover', function() {
-            moveButton('noBtn2');
-        });
-        noBtn2.addEventListener('touchstart', function(e) {
-            e.preventDefault();
-            moveButton('noBtn2');
-        });
-
-        function moveButton(btnId) {
+        function moveButton(btnId, wrapperId) {
             const btn = document.getElementById(btnId);
+            const wrapper = document.getElementById(wrapperId);
             
-            // Generate random position
-            const randomX = (Math.random() - 0.5) * 250;
-            const randomY = (Math.random() - 0.5) * 150;
+            // Get random position on screen
+            const randomX = Math.random() * (window.innerWidth - 140);
+            const randomY = Math.random() * (window.innerHeight - 60);
             
-            btn.style.left = randomX + 'px';
-            btn.style.top = randomY + 'px';
+            // Move the wrapper instead of button
+            wrapper.style.left = randomX + 'px';
+            wrapper.style.top = randomY + 'px';
+            
+            // Shake animation
             btn.style.animation = 'none';
-            
             setTimeout(() => {
                 btn.style.animation = 'shake 0.3s ease';
             }, 10);
         }
+
+        // Handle No Button Movement - Step 1 (Mouse & Touch)
+        const noBtn1 = document.getElementById('noBtn1');
+        noBtn1.addEventListener('mouseenter', function(e) {
+            e.preventDefault();
+            moveButton('noBtn1', 'noBtnWrapper1');
+        });
+        noBtn1.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton('noBtn1', 'noBtnWrapper1');
+        });
+
+        // Handle No Button Movement - Step 2 (Mouse & Touch)
+        const noBtn2 = document.getElementById('noBtn2');
+        noBtn2.addEventListener('mouseenter', function(e) {
+            e.preventDefault();
+            moveButton('noBtn2', 'noBtnWrapper2');
+        });
+        noBtn2.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton('noBtn2', 'noBtnWrapper2');
+        });
 
         // Go to Step 2
         function goToStep2() {
